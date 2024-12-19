@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 cose da fare</title>
+    <!-- Aggiungi il link per Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Stile Generale */
+        body {
+            font-family: 'Courier New', monospace;
+            background: #f8f5f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border: 2px solid #e4dcd1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d56062;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        /* Sezioni */
+        .section {
+            margin: 20px 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #b45f5f;
+            border-bottom: 2px dashed #e4dcd1;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            width: 100%; /* Assicura che l'elemento li prenda tutta la larghezza */
+        }
+
+        /* Allineamento degli elementi all'interno di li */
+        li span {
+            flex-grow: 1; /* Fa crescere il testo per occupare lo spazio disponibile */
+        }
+
+        input[type="checkbox"] {
+            margin-right: 15px;
+        }
+
+        .add-input {
+            width: 80%;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #d8cfc3;
+            border-radius: 5px;
+        }
+
+        button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #b45f5f;
+            padding: 5px;
+        }
+
+        button:hover {
+            color: #d56062;
+        }
+
+        /* Completate - Stile */
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        /* Aggiungi effetti natalizi */
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.8;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 2rem;
+            animation: fall 10s infinite linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #a89c8f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>100 cose da fare prima dei 🔞 di Deny</h1>
+
+        <!-- Sezione "Da Fare" -->
+        <div class="section">
+            <div class="section-title">Da Fare</div>
+            <ul id="todo-list">
+                <!-- Gli elementi dinamici appariranno qui -->
+            </ul>
+            <div style="display: flex; justify-content: space-between;">
+                <input type="text" class="add-input" id="todo-input" placeholder="Aggiungi una cosa da fare...">
+                <button onclick="addItem()">Aggiungi</button>
+            </div>
+        </div>
+
+        <!-- Sezione "Completate" -->
+        <div class="section">
+            <div class="section-title">Completate</div>
+            <ul id="completed-list">
+                <!-- Le attività completate finiranno qui -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        Creata con amore per Deny❤️ 🫶🏻🫶🏻🫶🏻
+    </div>
+
+    <!-- Aggiungi gli effetti di neve per Natale -->
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❄️</div>
+        <div class="snowflake">❄️</div>
+        <div class="snowflake">❄️</div>
+        <div class="snowflake">❄️</div>
+        <div class="snowflake">❄️</div>
+    </div>
+
+    <script>
+        let counter = 1; // Contatore per numerare gli elementi
+
+        // Funzione per aggiungere un elemento alla lista "Da Fare"
+        function addItem() {
+            const input = document.getElementById("todo-input");
+            const value = input.value.trim();
+
+            if (value) {
+                const list = document.getElementById("todo-list");
+                const li = document.createElement("li");
+                li.classList.add("todo-item");
+
+                // Aggiungi il numero all'inizio dell'elemento
+                li.innerHTML = `
+                    <input type="checkbox" onchange="moveToCompleted(this)">
+                    <span>${counter++}. ${value}</span> <!-- Incrementa e mostra il numero -->
+                    <button onclick="editItem(this)"><i class="fas fa-pen"></i></button>
+                `;
+                list.appendChild(li);
+                input.value = '';
+            }
+        }
+
+        // Funzione per spostare un elemento nella lista "Completate" o riportarlo indietro
+        function moveToCompleted(checkbox) {
+            const li = checkbox.parentElement; // Elemento padre del checkbox
+            const list = checkbox.checked ? document.getElementById("completed-list") : document.getElementById("todo-list");
+
+            if (checkbox.checked) {
+                li.classList.add("completed"); // Aggiunge lo stile "completato"
+            } else {
+                li.classList.remove("completed"); // Rimuove lo stile "completato"
+            }
+
+            // Sposta l'elemento tra le due liste
+            list.appendChild(li);
+        }
+
+        // Funzione per modificare un elemento
+        function editItem(button) {
+            const li = button.parentElement;
+            const span = li.querySelector('span');
+            const currentText = span.textContent.substring(span.textContent.indexOf('.') + 2); // Rimuovi il numero
+
+            // Crea un input per modificare il testo
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+
+            // Sostituisci lo span con l'input
+            li.replaceChild(input, span);
+
+            // Cambia il testo dell'icona in "Salva"
+            button.innerHTML = `<i class="fas fa-save"></i>`;
+
+            // Cambia la funzione del pulsante
+            button.setAttribute('onclick', 'saveItem(this)');
+
+            // Funzione per salvare la modifica
+            button.onclick = function() {
+                saveItem(button);
+            };
+        }
+
+        // Funzione per salvare la modifica di un elemento
+        function saveItem(button) {
+            const li = button.parentElement;
+            const input = li.querySelector('input[type="text"]');
+            const newText = input.value.trim();
+
+            if (newText) {
+                const span = document.createElement('span');
+                span.textContent = `${li.querySelector('span').textContent.split('.')[0]}. ${newText}`; // Mantieni il numero
+                li.replaceChild(span, input); // Sostituisci l'input con il nuovo testo
+                button.innerHTML = `<i class="fas fa-pen"></i>`; // Cambia l'icona in penna
+                button.setAttribute('onclick', 'editItem(this)'); // Ripristina la funzione originale
+            }
+        }
+    </script>
+</body>
+</html>
